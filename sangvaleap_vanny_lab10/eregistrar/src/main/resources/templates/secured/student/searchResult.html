@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Fairfield Library website - Home</title>
+  <style>
+    table {
+      border: 1px solid;
+      border-collapse: collapse;
+    }
+    table th, table td {
+      border: 1px solid;
+      padding: 1em;
+    }
+  </style>
+</head>
+<body>
+  <header th:replace="fragments/header :: header"></header>
+  
+  <main>
+    <h1>Search results for '[[${searchString}]]'</h1>
+    <section>
+      <form action="/eregister/student/search" method="get">
+        <fieldset>
+          <legend>Search for Students</legend>
+          <label>
+            You may search for students
+          </label>
+          <div>
+            <input type="search" name="searchString" id="searchString" th:value="${searchString}" autofocus>
+            <button type="submit">Search</button>
+          </div>
+        </fieldset>
+      </form>
+    </section>
+    <div>
+      <p><a href="/eregister/student/new">Add New Student</a></p>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Student Number</th>
+          <th>Firstname</th>
+          <th>Middlename</th>
+          <th>Lastname</th>
+          <th>CGPA</th>
+          <th>Enrollment Date</th>
+          <th>*</th>
+          <th>*</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="student, counter : ${students}">
+          <th th:text="${counter.count}+${'.'}"></th>
+          <td th:text="${student.studentNumber}"></td>
+          <td th:text="${student.firstName}"></td>
+          <td th:if="${student.middleName != null}">
+            <p>
+              <span th:text="${student.middleName}"></span><br>
+            </p>
+            <!-- <a th:href="@{'/fairfieldlibrary/publisher/primaryAddress/delete/{publisherId}'(publisherId=${publisher.publisherId})}">
+              Delete Address
+            </a> Done: Implemented this feature -->
+          </td>
+          <td th:if="${student.middleName == null}"></td>
+          <td th:text="${student.lastName}"></td>
+          <td th:text="${student.cgpa}"></td>
+          <td th:text="${student.dateOfEnrollment}"></td>
+          <td><a th:href="@{'/eregister/student/edit/{studentId}'(studentId=${student.studentId})}">Edit</a></td>
+          <td><a th:href="@{'/eregister/student/delete/{studentId}'(studentId=${student.studentId})}">Delete</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </main>
+</body>
+</html>

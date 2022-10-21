@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>ERegister website - New Student</title>
+  <style>
+    a.std-lnk-btn {
+      text-decoration:none;color: #000000;border: 1px solid #000000;padding: 0.20em;background-color: #efefef;
+    }
+    input.std-btn {
+      color: #000000;border: 1px solid #000000;padding: 0.35em;background-color: #efefef;
+    }
+  </style>
+</head>
+<body>
+  <header th:replace="fragments/header :: header"></header>
+  <main>
+    <h1>New Student Form</h1>
+    <div style="border: 1px solid;padding: 1em;">
+      <div>
+        Fields marked with asterisk (*) are required.
+      </div>
+      <form method="post" action="/eregister/student/new" th:object="${student}">
+        <fieldset>
+          <div>
+            <label>Student Number*</label>
+          </div>
+          <div>
+            <div><span th:if="${#fields.hasErrors('studentNumber')}" th:errors="*{studentNumber}" style="color:red;"></span></div>
+            <input name="studentNumber" type="text" th:value="${student.studentNumber}" autofocus>
+          </div>
+            <div>
+              <label>Firstname*</label>
+            </div>
+            <div>
+              <div><span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" style="color:red;"></span></div>
+              <input name="firstName" type="text" th:value="${student.firstName}" autofocus>
+            </div>
+
+            <div>
+                <label>Middlename</label>
+              </div>
+              <div>
+                <input name="middleName" type="text" th:value="${student.middleName}" autofocus>
+            </div>
+            <div>
+              <label>Lastname*</label>
+            </div>
+            <div>
+              <div><span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" style="color:red;"></span></div>
+              <input name="lastName" type="text" th:value="${student.lastName}" autofocus>
+            </div>
+            <div>
+                <label>CPGA</label>
+              </div>
+              <div>
+                <input name="cgpa" type="number" th:value="${student.cgpa}" autofocus>
+            </div>
+            <div>
+                <label>Enrollment Date</label>
+              </div>
+              <div>
+                <input min="2002-01-01" max="2122-12-31" name="dateOfEnrollment" type="date" th:value="${student.dateOfEnrollment}" autofocus>
+            </div>
+            <div>
+                <label>International student</label>
+            </div>
+            <div>
+                <input type="radio" name="isInternational" value="Yes" th:checked="${student.isInternational=='Yes'}">
+                <label for="isInternationalYes">Yes</label>
+
+                <input type="radio" name="isInternational" value="No" th:checked="${student.isInternational=='No'}">
+                <label for="isInternationalNo">No</label>
+            </div>
+        </fieldset>
+        <div style="margin-top: 1em;">
+          <a class="std-lnk-btn" href="/eregister/student/list">Cancel</a>
+          <input class="std-btn" type="reset" value="Reset">
+          <input class="std-btn" type="submit" value="Add Student">
+        </div>
+      </form>
+    </div>
+  </main>
+</body>
+</html>
