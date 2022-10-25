@@ -1,0 +1,82 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      layout:decorate="~{layouts/master-layout}">
+<head>
+    <title>The eRegistrar - Home</title>
+    <style>
+      table {
+        border: 1px solid;
+        border-collapse: collapse;
+      }
+      table th, table td {
+        border: 1px solid;
+        padding: 1em;
+      }
+    </style>
+</head>
+<body>
+    <div layout:fragment="content" style="padding-top:1em;" class="container">
+        <h1>List of Students</h1>
+        <hr/>
+        <main>
+          <section>
+            <form action="/eregister/secured/registrar/student/search" method="get">
+              <fieldset>
+                <legend>Search for Students</legend>
+                <label>
+                  Search results for '[[${searchString}]]'
+                </label>
+                <div>
+                  <input type="search" name="searchString" id="searchString" th:value="${searchString}" autofocus>
+                  <button type="submit">Search</button>
+                </div>
+              </fieldset>
+            </form>
+          </section>
+          <div>
+            <p><a href="/eregister/secured/registrar/student/new">Add New Student</a></p>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Student Number</th>
+                <th>Firstname</th>
+                <th>Middlename</th>
+                <th>Lastname</th>
+                <th>CGPA</th>
+                <th>Enrollment Date</th>
+                <th>*</th>
+                <th>*</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="student, counter : ${students}">
+                <th th:text="${counter.count}+${'.'}"></th>
+                <td th:text="${student.studentNumber}"></td>
+                <td th:text="${student.firstName}"></td>
+                <td th:if="${student.middleName != null}">
+                  <span th:text="${student.middleName}"></span>
+                </td>
+                <td th:if="${student.middleName == null}"></td>
+                <td th:text="${student.lastName}"></td>
+                <td th:text="${student.cgpa}"></td>
+                <td th:text="${student.dateOfEnrollment}"></td>
+                <td><a th:href="@{'/eregister/secured/registrar/student/edit/{studentId}'(studentId=${student.studentId})}">Edit</a></td>
+                <td><a th:href="@{'/eregister/secured/registrar/student/delete/{studentId}'(studentId=${student.studentId})}">Delete</a></td>
+              </tr>
+              <tr th:if="${students.isEmpty()}">
+                <td colspan="9" th:align="center">No students found</td>
+              </tr>
+            </tbody>
+          </table>
+        </main>
+    </div>
+
+    <th:block layout:fragment="footer"></th:block>
+
+</body>
+</html>
